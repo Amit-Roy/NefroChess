@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Chess } from 'chess.js';
-import * as Stockfish from 'stockfish';
+const Stockfish = typeof window !== 'undefined' ? require('stockfish') : null;
 
 const ChessBoard = ({ onMove, onExplain }) => {
   const [game, setGame] = useState(new Chess());
@@ -9,24 +9,26 @@ const ChessBoard = ({ onMove, onExplain }) => {
   const engineRef = useRef(null);
   
   useEffect(() => {
-    engineRef.current = Stockfish();
-    
-    engineRef.current.onmessage = (event) => {
-      const message = event.data;
-      if (message.includes('bestmove')) {
-        const bestMove = message.split(' ')[1];
-        console.log('Engine suggests:', bestMove);
-      }
-    };
-    
-    engineRef.current.postMessage('uci');
-    engineRef.current.postMessage('isready');
-    
-    return () => {
-      if (engineRef.current) {
-        engineRef.current.postMessage('quit');
-      }
-    };
+    if (typeof window !== 'undefined' && Stockfish) {
+      engineRef.current = Stockfish();
+      
+      engineRef.current.onmessage = (event) => {
+        const message = event.data;
+        if (message.includes('bestmove')) {
+          const bestMove = message.split(' ')[1];
+          console.log('Engine suggests:', bestMove);
+        }
+      };
+      
+      engineRef.current.postMessage('uci');
+      engineRef.current.postMessage('isready');
+      
+      return () => {
+        if (engineRef.current) {
+          engineRef.current.postMessage('quit');
+        }
+      };
+    }
   }, []);
   
   useEffect(() => {
@@ -71,7 +73,7 @@ const ChessBoard = ({ onMove, onExplain }) => {
   };
   
   const getEngineMove = () => {
-    if (!engineRef.current) return;
+    if (!engineRef.current || typeof window === 'undefined') return;
     
     engineRef.current.postMessage(`position fen ${game.fen()}`);
     engineRef.current.postMessage('go depth 15');
