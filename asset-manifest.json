@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/NefroChess/static/css/main.19bb1c33.css",
+    "main.js": "/NefroChess/static/js/main.b9c9bb20.js",
+    "index.html": "/NefroChess/index.html",
+    "main.19bb1c33.css.map": "/NefroChess/static/css/main.19bb1c33.css.map",
+    "main.b9c9bb20.js.map": "/NefroChess/static/js/main.b9c9bb20.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.19bb1c33.css",
+    "static/js/main.b9c9bb20.js"
+  ]
+}
