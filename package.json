@@ -1,0 +1,23 @@
+{
+  "name": "nefrochess",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mliebelt/pgn-viewer": "^1.6.11",
+    "autoprefixer": "^10.4.21",
+    "chess.js": "^1.2.0",
+    "postcss": "^8.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-scripts": "^5.0.1",
+    "stockfish": "^16.0.0",
+    "tailwindcss": "^4.1.6"
+  }
+}
