@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Chess } from 'chess.js';
-const Stockfish = typeof window !== 'undefined' ? require('stockfish') : null;
 
 const ChessBoard = ({ onMove, onExplain }) => {
   const [game, setGame] = useState(new Chess());
@@ -9,26 +8,19 @@ const ChessBoard = ({ onMove, onExplain }) => {
   const engineRef = useRef(null);
   
   useEffect(() => {
-    if (typeof window !== 'undefined' && Stockfish) {
-      engineRef.current = Stockfish();
-      
-      engineRef.current.onmessage = (event) => {
-        const message = event.data;
-        if (message.includes('bestmove')) {
-          const bestMove = message.split(' ')[1];
-          console.log('Engine suggests:', bestMove);
-        }
-      };
-      
-      engineRef.current.postMessage('uci');
-      engineRef.current.postMessage('isready');
-      
-      return () => {
-        if (engineRef.current) {
-          engineRef.current.postMessage('quit');
-        }
-      };
-    }
+    console.log('Chess engine would be initialized here');
+    
+    engineRef.current = {
+      postMessage: (msg) => console.log('Engine command:', msg),
+      simulateResponse: (move) => {
+        console.log('Engine simulating response for move:', move);
+        return { bestMove: 'e2e4' };
+      }
+    };
+    
+    return () => {
+      console.log('Chess engine would be cleaned up here');
+    };
   }, []);
   
   useEffect(() => {
@@ -73,10 +65,13 @@ const ChessBoard = ({ onMove, onExplain }) => {
   };
   
   const getEngineMove = () => {
-    if (!engineRef.current || typeof window === 'undefined') return;
+    if (!engineRef.current) return null;
     
     engineRef.current.postMessage(`position fen ${game.fen()}`);
-    engineRef.current.postMessage('go depth 15');
+    
+    const response = engineRef.current.simulateResponse(game.fen());
+    
+    return { from: 'e2', to: 'e4' };
   };
   
   const resetGame = () => {
