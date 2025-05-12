@@ -1,38 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { Chess } from 'chess.js';
 
 const ChessBoard = ({ onMove, onExplain }) => {
-  const [game, setGame] = useState(new Chess());
-  const [fen, setFen] = useState('');
-  const [lastMove, setLastMove] = useState(null);
-  const engineRef = useRef(null);
-  
-  useEffect(() => {
-    console.log('Chess engine would be initialized here');
-    
-    engineRef.current = {
-      postMessage: (msg) => console.log('Engine command:', msg),
-      simulateResponse: (move) => {
-        console.log('Engine simulating response for move:', move);
-        return { bestMove: 'e2e4' };
-      }
-    };
-    
-    return () => {
-      console.log('Chess engine would be cleaned up here');
-    };
-  }, []);
-  
-  useEffect(() => {
-    setFen(game.fen());
-  }, [game]);
+  const game = new Chess();
+  let fen = game.fen();
+  let lastMove = null;
+  const engineRef = {
+    postMessage: (msg) => console.log('Engine command:', msg),
+    simulateResponse: (move) => {
+      console.log('Engine simulating response for move:', move);
+      return { bestMove: 'e2e4' };
+    }
+  };
   
   const makeMove = (move) => {
     try {
       const result = game.move(move);
       if (result) {
-        setLastMove(result);
-        setFen(game.fen());
+        lastMove = result;
+        fen = game.fen();
         
         if (onMove) onMove(result, game.fen());
         
@@ -65,20 +50,21 @@ const ChessBoard = ({ onMove, onExplain }) => {
   };
   
   const getEngineMove = () => {
-    if (!engineRef.current) return null;
+    if (!engineRef) return null;
     
-    engineRef.current.postMessage(`position fen ${game.fen()}`);
+    engineRef.postMessage(`position fen ${game.fen()}`);
     
-    const response = engineRef.current.simulateResponse(game.fen());
+    const response = engineRef.simulateResponse(game.fen());
     
     return { from: 'e2', to: 'e4' };
   };
   
   const resetGame = () => {
     const newGame = new Chess();
-    setGame(newGame);
-    setFen(newGame.fen());
-    setLastMove(null);
+    game.load(newGame.fen());
+    fen = game.fen();
+    lastMove = null;
+    return { fen, lastMove };
   };
   
   return {
