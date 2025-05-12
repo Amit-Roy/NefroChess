@@ -1,0 +1,31 @@
+.chessboard {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.move-explanation {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.repertoire-list {
+  margin-top: 1rem;
+}
+
+.repertoire-item {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.repertoire-item:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
