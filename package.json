@@ -1,12 +1,23 @@
 {
   "name": "nefrochess",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI-enabled chess game with repertoire creation",
+  "homepage": "https://amit-roy.github.io/NefroChess",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
-  "keywords": [],
+  "keywords": [
+    "chess",
+    "ai",
+    "stockfish",
+    "repertoire"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -19,5 +30,20 @@
     "react-scripts": "^5.0.1",
     "stockfish": "^16.0.0",
     "tailwindcss": "^4.1.6"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
